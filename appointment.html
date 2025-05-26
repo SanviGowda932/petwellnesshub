@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Book Appointment - Pet Wellness Hub</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+
+  <style>
+    :root {
+      --primary: #2c3e50;
+      --secondary: #27ae60;
+      --light: #f9f9f9;
+      --error: #e74c3c;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: var(--light);
+      color: #333;
+    }
+
+    header {
+      background-color: var(--primary);
+      color: white;
+      padding: 1rem;
+      text-align: center;
+    }
+
+    header nav {
+      margin-top: 1rem;
+    }
+
+    header nav a {
+      margin: 0 1rem;
+      color: white;
+      text-decoration: none;
+    }
+
+    main {
+      padding: 2rem;
+    }
+
+    .description {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .layout {
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .card {
+      background: white;
+      border-radius: 8px;
+      padding: 1.5rem;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      flex: 1;
+      min-width: 300px;
+    }
+
+    .why-choose img {
+      width: 100%;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+    }
+
+    .form-group {
+      margin-bottom: 1rem;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .form-group label {
+      margin-bottom: 0.5rem;
+      font-weight: bold;
+    }
+
+    input, select, textarea {
+      padding: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    button {
+      background-color: var(--secondary);
+      color: white;
+      border: none;
+      padding: 0.75rem;
+      font-size: 1rem;
+      cursor: pointer;
+      border-radius: 4px;
+      width: 100%;
+    }
+
+    button:hover {
+      background-color: #219150;
+    }
+
+    .error {
+      color: var(--error);
+      margin-bottom: 1rem;
+    }
+
+    footer {
+      background-color: var(--primary);
+      color: white;
+      text-align: center;
+      padding: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.5);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .modal-content {
+      max-width: 500px;
+      text-align: center;
+    }
+
+    .modal-icon {
+      font-size: 4rem;
+      color: var(--secondary);
+      margin-bottom: 1rem;
+    }
+
+    .fade-in {
+      animation: fadeIn 0.6s ease forwards;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Pet Wellness Hub</h1>
+    <nav>
+      <a href="index.html"><i class="fas fa-home"></i> Home</a>
+      <a href="services.html"><i class="fas fa-paw"></i> Services</a>
+      <a href="appointment.html"><i class="fas fa-calendar-check"></i> Book Appointment</a>
+      <a href="contact.html"><i class="fas fa-envelope"></i> Contact</a>
+      <a href="login.html"><i class="fas fa-user"></i> Login</a>
+    </nav>
+  </header>
+
+  <main>
+    <h2 class="fade-in">Book Your Appointment</h2>
+    <p class="fade-in description">Schedule a visit with our expert veterinarians for your pet's health needs.</p>
+
+    <div class="layout">
+      <div class="card fade-in why-choose">
+        <img src="https://img.freepik.com/premium-photo/vet-doctor-examining-dog-cat-animal-clinic_488220-17516.jpg?w=2000" alt="Vet with pet" />
+        <h3>Why Choose Us?</h3>
+        <ul>
+          <li>Same-day appointments available</li>
+          <li>Emergency services</li>
+          <li>State-of-the-art facilities</li>
+          <li>Compassionate care</li>
+        </ul>
+      </div>
+
+      <div class="card fade-in form-card">
+        <form id="appointmentForm">
+          <div class="form-group">
+            <label for="ownerName"><i class="fas fa-user"></i> Owner Name</label>
+            <input type="text" id="ownerName" name="ownerName" required />
+          </div>
+
+          <div class="form-group">
+            <label for="email"><i class="fas fa-envelope"></i> Email</label>
+            <input type="email" id="email" name="email" required />
+          </div>
+
+          <div class="form-group">
+            <label for="phone"><i class="fas fa-phone"></i> Phone Number</label>
+            <input type="tel" id="phone" name="phone" required />
+          </div>
+
+          <div class="form-group">
+            <label for="petName"><i class="fas fa-paw"></i> Pet Name</label>
+            <input type="text" id="petName" name="petName" required />
+          </div>
+
+          <div class="form-group">
+            <label for="petBreed"><i class="fas fa-dog"></i> Pet Breed</label>
+            <input type="text" id="petBreed" name="petBreed" placeholder="e.g., Golden Retriever" required />
+          </div>
+
+          <div class="form-group">
+            <label for="petType"><i class="fas fa-dog"></i> Pet Type</label>
+            <select id="petType" name="petType" required>
+              <option value="">Select pet type</option>
+              <option value="dog">Dog</option>
+              <option value="cat">Cat</option>
+              <option value="bird">Bird</option>
+              <option value="rabbit">Rabbit</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="service"><i class="fas fa-stethoscope"></i> Service Needed</label>
+            <select id="service" name="service" required>
+              <option value="">Select service</option>
+              <option value="checkup">General Check-up</option>
+              <option value="vaccination">Vaccination</option>
+              <option value="grooming">Grooming</option>
+              <option value="surgery">Surgery</option>
+              <option value="emergency">Emergency</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="date"><i class="fas fa-calendar-day"></i> Preferred Date</label>
+            <input type="date" id="date" name="date" required />
+          </div>
+
+          <div class="form-group">
+            <label for="time"><i class="fas fa-clock"></i> Time Slot</label>
+            <select id="time" name="time" required>
+              <option value="">Select time slot</option>
+              <option value="9:00 AM">9:00 AM - 10:00 AM</option>
+              <option value="11:00 AM">11:00 AM - 12:00 PM</option>
+              <option value="2:00 PM">2:00 PM - 3:00 PM</option>
+              <option value="4:00 PM">4:00 PM - 5:00 PM</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="notes"><i class="fas fa-notes-medical"></i> Additional Notes</label>
+            <textarea id="notes" name="notes" rows="3" placeholder="Any special requirements or concerns"></textarea>
+          </div>
+
+          <div id="errorMessage" class="error"></div>
+          <button type="submit"><i class="fas fa-calendar-plus"></i> Book Appointment</button>
+        </form>
+      </div>
+    </div>
+
+    <div id="confirmationModal" class="modal">
+      <div class="modal-content card">
+        <i class="fas fa-check-circle modal-icon"></i>
+        <h3>Appointment Booked Successfully!</h3>
+        <p id="confirmationDetails"></p>
+        <button onclick="closeModal()">Close</button>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2023 Pet Wellness Hub. All rights reserved.</p>
+  </footer>
+
+  <script>
+    document.getElementById('appointmentForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const errorDiv = document.getElementById('errorMessage');
+      errorDiv.textContent = "";
+
+      const owner = document.getElementById('ownerName').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+      const pet = document.getElementById('petName').value.trim();
+      const breed = document.getElementById('petBreed').value.trim();
+      const petType = document.getElementById('petType').value;
+      const service = document.getElementById('service').value;
+      const date = document.getElementById('date').value;
+      const time = document.getElementById('time').value;
+      const notes = document.getElementById('notes').value.trim();
+
+      if (!owner || !email || !phone || !pet || !breed || !petType || !service || !date || !time) {
+        errorDiv.textContent = "Please fill in all required fields.";
+        return;
+      }
+
+      const selectedDate = new Date(date);
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+
+      if (selectedDate < today) {
+        errorDiv.textContent = "Date cannot be in the past.";
+        return;
+      }
+
+      const appointment = {
+        id: Date.now(),
+        createdAt: new Date().toISOString(),
+        owner, email, phone, pet, breed, petType, service, date, time, notes
+      };
+
+      let appointments = JSON.parse(localStorage.getItem('appointments') || "[]");
+      appointments.push(appointment);
+      localStorage.setItem('appointments', JSON.stringify(appointments));
+
+      showConfirmation(appointment);
+    });
+
+    function showConfirmation(appointment) {
+      const modal = document.getElementById('confirmationModal');
+      const details = document.getElementById('confirmationDetails');
+
+      details.innerHTML = `
+        <p><strong>Owner:</strong> ${appointment.owner}</p>
+        <p><strong>Pet:</strong> ${appointment.pet} (${appointment.petType}, ${appointment.breed})</p>
+        <p><strong>Service:</strong> ${appointment.service}</p>
+        <p><strong>Date:</strong> ${appointment.date} at ${appointment.time}</p>
+        <p>A confirmation has been sent to ${appointment.email}</p>
+      `;
+
+      modal.style.display = 'flex';
+    }
+
+    function closeModal() {
+      document.getElementById('confirmationModal').style.display = 'none';
+      document.getElementById('appointmentForm').reset();
+    }
+  </script>
+</body>
+</html>

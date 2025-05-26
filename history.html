@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Appointment History - Pet Wellness Hub</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <style>
+    :root {
+      --primary: #4CAF50;
+      --secondary: #2196F3;
+      --light: #f1f1f1;
+    }
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0 1rem 2rem;
+      background-color: #fff;
+    }
+    header, footer {
+      background-color: var(--primary);
+      color: white;
+      padding: 1rem;
+      text-align: center;
+    }
+    nav a {
+      color: white;
+      margin: 0 0.5rem;
+      text-decoration: none;
+    }
+    nav a:hover {
+      text-decoration: underline;
+    }
+    .card {
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgb(0 0 0 / 0.15);
+      margin: 1rem auto;
+      max-width: 900px;
+      padding: 1.5rem;
+    }
+    h1, h2, h3 {
+      margin: 0 0 1rem;
+    }
+    .history-controls {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    .search-filter {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .pagination {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+    .pagination button {
+      padding: 0.4rem 0.8rem;
+      border: none;
+      background-color: var(--secondary);
+      color: white;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+    .pagination button:disabled {
+      background-color: #aaa;
+      cursor: not-allowed;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+    }
+    th, td {
+      padding: 10px 15px;
+      border-bottom: 1px solid #ddd;
+      text-align: left;
+    }
+    th {
+      background-color: var(--primary);
+      color: white;
+      position: sticky;
+      top: 0;
+      z-index: 1;
+    }
+    tr:hover {
+      background-color: var(--light);
+    }
+    .status-pending { color: #ff9800; font-weight: bold; }
+    .status-completed { color: var(--secondary); font-weight: bold; }
+    .status-cancelled { color: #f44336; font-weight: bold; }
+    .payment-pending { color: #ff9800; font-weight: bold; }
+    .payment-paid { color: var(--secondary); font-weight: bold; }
+    .payment-failed { color: #f44336; font-weight: bold; }
+    .payment-refunded { color: #9c27b0; font-weight: bold; }
+    .action-btn {
+      padding: 0.25rem 0.5rem;
+      margin: 0 0.25rem;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      color: white;
+    }
+    .action-btn.view { background-color: var(--secondary); }
+    .action-btn.edit { background-color: #2196F3; }
+    .action-btn.print { background-color: #607d8b; }
+    #stats {
+      margin-top: 1rem;
+      padding: 1rem;
+      background: var(--light);
+      border-radius: 6px;
+      font-size: 1.1rem;
+      max-width: 900px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    @media (max-width: 768px) {
+      table {
+        display: block;
+        overflow-x: auto;
+      }
+      .history-controls {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .pagination {
+        justify-content: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+<header>
+  <h1>Pet Wellness Hub</h1>
+  <nav>
+    <a href="index.html"><i class="fas fa-home"></i> Home</a>
+    <a href="services.html"><i class="fas fa-paw"></i> Services</a>
+    <a href="appointment.html"><i class="fas fa-calendar-check"></i> Book Appointment</a>
+    <a href="history.html"><i class="fas fa-history"></i> History</a>
+    <a href="login.html"><i class="fas fa-user"></i> Login</a>
+  </nav>
+</header>
+
+<main>
+  <div class="card fade-in">
+    <h2><i class="fas fa-history"></i> Appointment History</h2>
+    <p>View and manage your past and upcoming appointments</p>
+
+    <div class="history-controls">
+      <div class="search-filter">
+        <input type="text" id="searchInput" placeholder="Search appointments..." style="padding: 0.5rem;">
+        <select id="statusFilter" style="padding: 0.5rem;">
+          <option value="all">All Statuses</option>
+          <option value="pending">Pending</option>
+          <option value="completed">Completed</option>
+          <option value="cancelled">Cancelled</option>
+        </select>
+        <select id="paymentFilter" style="padding: 0.5rem;">
+          <option value="all">All Payments</option>
+          <option value="pending">Payment Pending</option>
+          <option value="paid">Paid</option>
+          <option value="failed">Failed</option>
+          <option value="refunded">Refunded</option>
+        </select>
+        <button onclick="filterAppointments()" style="padding: 0.5rem 1rem;">
+          <i class="fas fa-filter"></i> Filter
+        </button>
+      </div>
+      <div class="pagination">
+        <button id="prevBtn" onclick="prevPage()" title="Previous Page"><i class="fas fa-chevron-left"></i></button>
+        <span id="pageInfo">Page 1 of 1</span>
+        <button id="nextBtn" onclick="nextPage()" title="Next Page"><i class="fas fa-chevron-right"></i></button>
+      </div>
+    </div>
+
+    <div style="overflow-x: auto;">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Date</th>
+            <th>Pet</th>
+            <th>Service</th>
+            <th>Amount</th>
+            <th>Appt Status</th>
+            <th>Payment</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="historyBody">
+          <tr>
+            <td colspan="8">Loading appointment history...</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div id="stats" aria-live="polite">
+      <strong>Most Common Pet:</strong> <span id="commonPet">Loading...</span><br />
+      <strong>Popular Service:</strong> <span id="popularService">Loading...</span>
+    </div>
+  </div>
+
+  <!-- Appointment Details Modal -->
+  <div id="detailsModal" class="modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center;">
+    <div class="card" style="max-width: 600px; width: 90%; max-height: 90vh; overflow-y: auto;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+        <h3 id="modalTitle">Appointment Details</h3>
+        <button onclick="closeModal()" style="background: none; border: none; font-size: 1.5rem; cursor: pointer;">&times;</button>
+      </div>
+      <div id="modalContent">
+        <!-- Details will be inserted here -->
+      </div>
+      <div style="display: flex; justify-content: flex-end; gap: 1rem; margin-top: 1.5rem;">
+        <button onclick="printAppointment()" class="action-btn print">
+          <i class="fas fa-print"></i> Print
+        </button>
+        <button onclick="closeModal()" style="background-color: #f44336;">
+          <i class="fas fa-times"></i> Close
+        </button>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer style="background-color: var(--primary); color: white; text-align: center; padding: 1.5rem; margin-top: 2rem;">
+  <p>&copy; 2023 Pet Wellness Hub. All rights reserved.</p>
+</footer>
+
+<script>
+  // Global variables
+  let allAppointments = [];
+  let filteredAppointments = [];
+  let currentPage = 1;
+  const appointmentsPerPage = 10;
+  const servicePrices = {
+    'checkup': 50,
+    'vaccination': 75,
+    'grooming': 60,
+    'surgery': 200,
+    'emergency': 150
+  };
+
+  document.addEventListener('DOMContentLoaded', () => {
+    loadAppointments();
+  });
+
+  function loadAppointments() {
+    const stored = localStorage.getItem('appointments');
+    allAppointments = stored ? JSON.parse(stored) : [];
+
+    // Sanitize and normalize appointment data
+    allAppointments = allAppointments.map(appt => {
+      if (!appt.status) {
+        const apptDate = new Date(appt.date);
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        appt.status = apptDate < today ? 'completed' : 'pending';
+      }
+      if (!appt.paymentStatus) {
+        appt.paymentStatus = appt.status === 'completed' ? 'paid' : 'pending';
+      }
+      if (appt.amount === undefined || appt.amount === null) {
+        appt.amount = servicePrices[appt.service] || 0;
+      }
+      // Ensure pet and service exist as strings
+      appt.pet = appt.pet ? appt.pet.toString() : 'Unknown';
+      appt.service = appt.service ? appt.service.toString() : 'Unknown';
+
+      return appt;
+    });
+
+    // Sort newest first
+    allAppointments.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+    filterAppointments();
+  }
+
+  function filterAppointments() {
+    const searchTerm = (document.getElementById('searchInput').value || '').toLowerCase();
+    const statusFilter = document.getElementById('statusFilter').value;
+    const paymentFilter = document.getElementById('paymentFilter').value;
+
+    filteredAppointments = allAppointments.filter(appt => {
+      const matchesSearch =
+        (appt.owner && appt.owner.toLowerCase().includes(searchTerm)) ||
+        (appt.pet && appt.pet.toLowerCase().includes(searchTerm)) ||
+        (appt.service && appt.service.toLowerCase().includes(searchTerm));
+
+      const matchesStatus = statusFilter === 'all' || appt.status === statusFilter;
+      const matchesPayment = paymentFilter === 'all' || appt.paymentStatus === paymentFilter;
+
+      return matchesSearch && matchesStatus && matchesPayment;
+    });
+
+    currentPage = 1;
+    displayAppointments();
+    updateStats();
+  }
+
+  function displayAppointments() {
+    const tbody = document.getElementById('historyBody');
+    tbody.innerHTML = '';
+
+    if (filteredAppointments.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="8">No appointments found.</td></tr>';
+      document.getElementById('pageInfo').textContent = 'Page 0 of 0';
+      togglePaginationButtons(0);
+      return;
+    }
+
+    const start = (currentPage - 1) * appointmentsPerPage;
+    const end = start + appointmentsPerPage;
+    const pageItems = filteredAppointments.slice(start, end);
+
+    pageItems.forEach(appt => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${appt.id || '-'}</td>
+        <td>${formatDate(appt.date)}</td>
+        <td>${capitalize(appt.pet)}</td>
+        <td>${capitalize(appt.service)}</td>
+        <td>$${appt.amount.toFixed(2)}</td>
+        <td class="status-${appt.status}">${capitalize(appt.status)}</td>
+        <td class="payment-${appt.paymentStatus}">${capitalize(appt.paymentStatus)}</td>
+        <td>
+          <button class="action-btn view" title="View Details" onclick="showDetails(${appt.id})"><i class="fas fa-eye"></i></button>
+          <button class="action-btn edit" title="Edit Appointment" onclick="editAppointment(${appt.id})"><i class="fas fa-edit"></i></button>
+          <button class="action-btn print" title="Print Appointment" onclick="printAppointment(${appt.id})"><i class="fas fa-print"></i></button>
+        </td>
+      `;
+      tbody.appendChild(tr);
+    });
+
+    const totalPages = Math.ceil(filteredAppointments.length / appointmentsPerPage);
+    document.getElementById('pageInfo').textContent = `Page ${currentPage} of ${totalPages}`;
+    togglePaginationButtons(totalPages);
+  }
+
+  function togglePaginationButtons(totalPages) {
+    document.getElementById('prevBtn').disabled = currentPage <= 1;
+    document.getElementById('nextBtn').disabled = currentPage >= totalPages;
+  }
+
+  function prevPage() {
+    if (currentPage > 1) {
+      currentPage--;
+      displayAppointments();
+    }
+  }
+
+  function nextPage() {
+    const totalPages = Math.ceil(filteredAppointments.length / appointmentsPerPage);
+    if (currentPage < totalPages) {
+      currentPage++;
+      displayAppointments();
+    }
+  }
+
+  function formatDate(dateString) {
+    if (!dateString) return '-';
+    const date = new Date(dateString);
+    if (isNaN(date)) return '-';
+    return date.toLocaleString(undefined, {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+    });
+  }
+
+  function capitalize(text) {
+    if (!text || typeof text !== 'string') return '';
+    return text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
+  }
+
+  function getMostCommonPet(appointments) {
+    const petCount = {};
+    appointments.forEach(appt => {
+      const pet = appt.pet || 'Unknown';
+      petCount[pet] = (petCount[pet] || 0) + 1;
+    });
+
+    let maxCount = 0;
+    let mostCommon = 'None';
+
+    for (const pet in petCount) {
+      if (petCount[pet] > maxCount) {
+        maxCount = petCount[pet];
+        mostCommon = pet;
+      }
+    }
+    return capitalize(mostCommon);
+  }
+
+  function getPopularService(appointments) {
+    const serviceCount = {};
+    appointments.forEach(appt => {
+      const service = appt.service || 'Unknown';
+      serviceCount[service] = (serviceCount[service] || 0) + 1;
+    });
+
+    let maxCount = 0;
+    let popular = 'None';
+
+    for (const service in serviceCount) {
+      if (serviceCount[service] > maxCount) {
+        maxCount = serviceCount[service];
+        popular = service;
+      }
+    }
+    return capitalize(popular);
+  }
+
+  function updateStats() {
+    const commonPet = getMostCommonPet(allAppointments);
+    const popularService = getPopularService(allAppointments);
+
+    document.getElementById('commonPet').textContent = commonPet;
+    document.getElementById('popularService').textContent = popularService;
+  }
+
+  // Modal logic
+  let currentDetailApptId = null;
+
+  function showDetails(id) {
+    const appt = allAppointments.find(a => a.id === id);
+    if (!appt) {
+      alert('Appointment not found.');
+      return;
+    }
+    currentDetailApptId = id;
+    const modal = document.getElementById('detailsModal');
+    const content = document.getElementById('modalContent');
+
+    content.innerHTML = `
+      <p><strong>Appointment ID:</strong> ${appt.id || '-'}</p>
+      <p><strong>Date & Time:</strong> ${formatDate(appt.date)}</p>
+      <p><strong>Owner:</strong> ${appt.owner || '-'}</p>
+      <p><strong>Pet:</strong> ${capitalize(appt.pet)}</p>
+      <p><strong>Service:</strong> ${capitalize(appt.service)}</p>
+      <p><strong>Amount:</strong> $${appt.amount.toFixed(2)}</p>
+      <p><strong>Status:</strong> ${capitalize(appt.status)}</p>
+      <p><strong>Payment Status:</strong> ${capitalize(appt.paymentStatus)}</p>
+      <p><strong>Notes:</strong> ${appt.notes || 'None'}</p>
+    `;
+
+    modal.style.display = 'flex';
+  }
+
+  function closeModal() {
+    document.getElementById('detailsModal').style.display = 'none';
+    currentDetailApptId = null;
+  }
+
+  function printAppointment(id) {
+    const apptId = id || currentDetailApptId;
+    if (!apptId) {
+      alert('Please select an appointment to print.');
+      return;
+    }
+    const appt = allAppointments.find(a => a.id === apptId);
+    if (!appt) {
+      alert('Appointment not found.');
+      return;
+    }
+
+    // Prepare printable content
+    const printWindow = window.open('', '', 'width=600,height=600');
+    printWindow.document.write('<html><head><title>Print Appointment</title></head><body>');
+    printWindow.document.write('<h2>Appointment Details</h2>');
+    printWindow.document.write('<p><strong>Appointment ID:</strong> ' + (appt.id || '-') + '</p>');
+    printWindow.document.write('<p><strong>Date & Time:</strong> ' + formatDate(appt.date) + '</p>');
+    printWindow.document.write('<p><strong>Owner:</strong> ' + (appt.owner || '-') + '</p>');
+    printWindow.document.write('<p><strong>Pet:</strong> ' + capitalize(appt.pet) + '</p>');
+    printWindow.document.write('<p><strong>Service:</strong> ' + capitalize(appt.service) + '</p>');
+    printWindow.document.write('<p><strong>Amount:</strong> $' + appt.amount.toFixed(2) + '</p>');
+    printWindow.document.write('<p><strong>Status:</strong> ' + capitalize(appt.status) + '</p>');
+    printWindow.document.write('<p><strong>Payment Status:</strong> ' + capitalize(appt.paymentStatus) + '</p>');
+    printWindow.document.write('<p><strong>Notes:</strong> ' + (appt.notes || 'None') + '</p>');
+    printWindow.document.write('</body></html>');
+    printWindow.document.close();
+    printWindow.focus();
+    printWindow.print();
+    printWindow.close();
+  }
+
+  function editAppointment(id) {
+    alert('Edit appointment functionality is not implemented yet. Appointment ID: ' + id);
+    // You can implement your edit logic here
+  }
+</script>
+</body>
+</html>

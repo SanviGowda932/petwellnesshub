@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Our Services - Pet Wellness Hub</title>
+  <style>
+    :root {
+      --primary: #004d40;
+      --secondary: #ff6f00;
+      --light: #f9f9f9;
+      --shadow: rgba(0, 0, 0, 0.1) 0 2px 8px;
+      --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: var(--font-family);
+      background-color: var(--light);
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    header {
+      background-color: var(--primary);
+      color: white;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    nav a {
+      color: white;
+      margin-left: 1.5rem;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    nav a:hover {
+      color: var(--secondary);
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 1.8rem;
+    }
+
+    main {
+      max-width: 960px;
+      margin: 2rem auto;
+      background: white;
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+    }
+
+    .service-item {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 2rem;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .service-header {
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+    }
+
+    .service-image {
+      width: 160px;
+      height: 100px;
+      border-radius: 8px;
+      object-fit: cover;
+      box-shadow: var(--shadow);
+      transition: transform 0.3s ease;
+    }
+
+    .service-image:hover {
+      transform: scale(1.05);
+    }
+
+    .service-text {
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: var(--primary);
+    }
+
+    .service-details {
+      display: none;
+      padding-top: 1rem;
+      padding-left: 180px;
+      animation: fadeIn 0.4s ease-in-out;
+    }
+
+    .service-desc {
+      font-size: 1rem;
+      color: #555;
+      line-height: 1.6;
+      margin-bottom: 0.5rem;
+    }
+
+    .price-list {
+      margin-top: 0.5rem;
+      font-size: 0.95rem;
+      color: #333;
+    }
+
+    .price-list li {
+      margin-left: 1rem;
+      list-style: disc;
+    }
+
+    footer {
+      background-color: var(--primary);
+      color: white;
+      text-align: center;
+      padding: 1.5rem;
+      margin-top: auto;
+    }
+
+    @media (max-width: 600px) {
+      .service-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .service-details {
+        padding-left: 0;
+      }
+      .service-image {
+        width: 100%;
+        height: 180px;
+      }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Our Services</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="services.html">Services</a>
+      <a href="appointment.html">Book Appointment</a>
+      <a href="contact.html">Contact</a>
+      <a href="login.html">Login</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="service-item" onclick="toggleDetails(this)">
+      <div class="service-header">
+        <img class="service-image" src="https://perfectdoseveterinaryclinic.com/wp-content/uploads/2017/07/General-Checkup.jpg" alt="General Check-ups" />
+        <div class="service-text">General Check-ups</div>
+      </div>
+      <div class="service-details">
+        <p class="service-desc">
+          Regular physical exams help detect early signs of disease, monitor wellness, and ensure long-term health for your pets.
+        </p>
+        <ul class="price-list">
+          <li>Basic Check-up: ₹500</li>
+          <li>Advanced Health Panel: ₹1,200</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="service-item" onclick="toggleDetails(this)">
+      <div class="service-header">
+        <img class="service-image" src="https://topdogtips.com/wp-content/uploads/2022/07/Microchip-on-Dogs.jpg" alt="Vaccination & Deworming" />
+        <div class="service-text">Vaccination & Deworming</div>
+      </div>
+      <div class="service-details">
+        <p class="service-desc">
+          Keep your pets safe with routine vaccinations and deworming to prevent internal parasites and deadly diseases.
+        </p>
+        <ul class="price-list">
+          <li>Annual Vaccine Package: ₹1,800</li>
+          <li>Deworming (oral): ₹300</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="service-item" onclick="toggleDetails(this)">
+      <div class="service-header">
+        <img class="service-image" src="https://www.louisvillepetvet.com/services/_images/surgical-procedures.jpg" alt="Surgery & Treatment" />
+        <div class="service-text">Surgery & Treatment</div>
+      </div>
+      <div class="service-details">
+        <p class="service-desc">
+          Our veterinary surgeons perform both elective and emergency surgeries with precision, compassion, and top-tier equipment.
+        </p>
+        <ul class="price-list">
+          <li>Spay/Neuter: ₹4,500–₹6,000</li>
+          <li>Soft Tissue Surgery: ₹8,000+</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="service-item" onclick="toggleDetails(this)">
+      <div class="service-header">
+        <img class="service-image" src="https://www.angiesmobilepetstyling.com/wp-content/uploads/2023/04/1.jpg" alt="Grooming & Wellness" />
+        <div class="service-text">Grooming & Wellness</div>
+      </div>
+      <div class="service-details">
+        <p class="service-desc">
+          Let your pet shine with our grooming packages — tailored for comfort, style, and overall hygiene.
+        </p>
+        <ul class="price-list">
+          <li>Full Grooming Package: ₹1,000</li>
+          <li>Nail Trim & Ear Cleaning: ₹400</li>
+        </ul>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Pet Wellness Hub. All rights reserved.</p>
+  </footer>
+
+  <script>
+    function toggleDetails(serviceElement) {
+      const details = serviceElement.querySelector(".service-details");
+      const isVisible = details.style.display === "block";
+      document.querySelectorAll(".service-details").forEach(d => d.style.display = "none");
+      details.style.display = isVisible ? "none" : "block";
+    }
+  </script>
+
+</body>
+</html>
