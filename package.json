@@ -1,5 +1,5 @@
 {
-<<<<<<< HEAD
+// CONFLICT START A
   "name": "petwellnesshub-backend",
   "version": "1.0.0",
   "description": "Backend API for the Pet Wellness Hub platform",
@@ -19,7 +19,7 @@
   ],
   "author": "Sanvi Gowda",
   "license": "ISC",
-=======
+// CONFLICT MIDDLE
   "name": "petwellnesshub---copy",
   "version": "1.0.0",
   "main": "server.js",
@@ -27,36 +27,36 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
   },
->>>>>>> 364184bbd8880d82ad510bb217841bd649f080e6
+// CONFLICT END B
   "repository": {
     "type": "git",
     "url": "git+https://github.com/SanviGowda932/petwellnesshub.git"
   },
-<<<<<<< HEAD
-=======
+// CONFLICT START A
+// CONFLICT MIDDLE
   "keywords": [],
   "author": "",
   "license": "ISC",
->>>>>>> 364184bbd8880d82ad510bb217841bd649f080e6
+// CONFLICT END B
   "bugs": {
     "url": "https://github.com/SanviGowda932/petwellnesshub/issues"
   },
   "homepage": "https://github.com/SanviGowda932/petwellnesshub#readme",
-<<<<<<< HEAD
-=======
+// CONFLICT START A
+// CONFLICT MIDDLE
   "description": "",
->>>>>>> 364184bbd8880d82ad510bb217841bd649f080e6
+// CONFLICT END B
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
     "mongoose": "^8.15.1",
     "nodemailer": "^7.0.3"
-<<<<<<< HEAD
+// CONFLICT START A
+// CONFLICT MIDDLE
   },
   "devDependencies": {
     "nodemon": "^3.1.0"
-=======
->>>>>>> 364184bbd8880d82ad510bb217841bd649f080e6
+// CONFLICT END B
   }
 }

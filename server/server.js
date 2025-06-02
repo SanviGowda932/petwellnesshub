@@ -1,7 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-<<<<<<< HEAD
+// CONFLICT START A
 const dotenv = require('dotenv');
 const Appointment = require('./models/Appointment');
 const { authenticateToken, authorizeRoles } = require('./middleware/auth');
@@ -107,7 +107,7 @@ console.log(`🚀 Server running on http:
 // Error handler middleware
 const errorHandler = require('../middlewares/errorHandler');
 app.use(errorHandler);
-=======
+// CONFLICT MIDDLE
 const Appointment = require('./models/Appointment.js');
 
 const app = express();
@@ -220,4 +220,4 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`🚀 Server running on http://localhost:${PORT}`);
 });
->>>>>>> 364184bbd8880d82ad510bb217841bd649f080e6
+// CONFLICT END B

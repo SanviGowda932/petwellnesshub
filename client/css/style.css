@@ -222,7 +222,7 @@ input:focus, select:focus, textarea:focus {
     height: 180px;
   }
 }
-<<<<<<< HEAD
+// CONFLICT START A
 
 
 /* Responsive Design Enhancements */
@@ -269,5 +269,5 @@ input:focus, select:focus, textarea:focus {
     padding-left: 0;
   }
 }
-=======
->>>>>>> 364184bbd8880d82ad510bb217841bd649f080e6
+// CONFLICT MIDDLE
+// CONFLICT END B

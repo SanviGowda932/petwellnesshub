@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+// CONFLICT START A
 require('dotenv').config();
 const nodemailer = require('nodemailer');
 const transporter = nodemailer.createTransport({
@@ -26,7 +26,7 @@ else console.log('✅ Email sent:', info.response);
 });
 };
 module.exports = sendConfirmationEmail;
-=======
+// CONFLICT MIDDLE
 // server/mailer.js
 require('dotenv').config();
 const nodemailer = require('nodemailer');
@@ -59,4 +59,4 @@ const sendConfirmationEmail = (to, appointmentDetails) => {
 };
 
 module.exports = sendConfirmationEmail;
->>>>>>> 364184bbd8880d82ad510bb217841bd649f080e6
+// CONFLICT END B
